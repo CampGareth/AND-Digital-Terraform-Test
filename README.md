@@ -17,7 +17,7 @@ This repository is meant to demonstrate the following in Terraform:
 - create a Dev and Prod environments with the same infra above (LB, EC2)
 - this should demonstrate some form of repeatable code 
 
-## Thoughts on implementation
-[ ] Use Golang for the hello world application
-[ ] Containerise the application
-[ ] Upload to ECR
+## TODOs
+- Trim container size down
+- Dev and prod environment using variables
+- Clean it up, a lot of 'foobar' names in there
