@@ -1,14 +1,7 @@
-# - DONE - VPC (not default)
-# - DONE - Public/private subnets. Q: am I using them correctly? 
-# - DONE - Security Groups 
-# - DONE - A Load Balancer (ELB)
-# - DONE - Two EC2 instances across availability zones in an Auto Scaling Group
-# - the instances should run a Web page with a "Hello World" returned
-
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "foobar"
+  name = "foobar-${var.environment-name}"
   cidr = "10.0.0.0/16"
 
   azs             = ["us-east-1a", "us-east-1b"]
@@ -18,7 +11,7 @@ module "vpc" {
   enable_nat_gateway = true
 
   tags = {
-    Environment = "dev"
+    Environment = "${var.environment-name}"
   }
 }
 
@@ -38,6 +31,10 @@ resource "aws_security_group" "allow_port_80" {
     to_port         = 0
     protocol        = "-1"
     cidr_blocks     = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Environment = "${var.environment-name}"
   }
 }
 
@@ -146,11 +143,12 @@ resource "aws_elb" "foobar-elb" {
 
   tags = {
     Name = "foobar-terraform-elb"
+    Environment = "${var.environment-name}"
   }
 }
 
 resource "aws_autoscaling_group" "bar" {
-  name                      = "foobar3-terraform-test"
+  name_prefix               = "${var.environment-name}"
   max_size                  = 2
   min_size                  = 0
   health_check_grace_period = 1000
@@ -160,4 +158,10 @@ resource "aws_autoscaling_group" "bar" {
   load_balancers            = ["${aws_elb.foobar-elb.name}"]
   launch_configuration      = "${aws_launch_configuration.pull_and_run_web_app.name}"
   vpc_zone_identifier       = ["${module.vpc.public_subnets}", "${module.vpc.public_subnets}"]
+
+  tags = {
+    key                 = "Environment"
+    value               = "${var.environment-name}"
+    propagate_at_launch = true
+  }
 }
