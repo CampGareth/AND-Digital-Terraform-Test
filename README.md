@@ -19,5 +19,4 @@ This repository is meant to demonstrate the following in Terraform:
 
 ## TODOs
 - Trim container size down
-- Dev and prod environment using variables
 - Clean it up, a lot of 'foobar' names in there
