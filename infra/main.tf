@@ -157,7 +157,7 @@ resource "aws_autoscaling_group" "bar" {
   force_delete              = true
   load_balancers            = ["${aws_elb.foobar-elb.name}"]
   launch_configuration      = "${aws_launch_configuration.pull_and_run_web_app.name}"
-  vpc_zone_identifier       = ["${module.vpc.public_subnets}", "${module.vpc.public_subnets}"]
+  vpc_zone_identifier       = ["${module.vpc.public_subnets}", "${module.vpc.private_subnets}"]
 
   tags = {
     key                 = "Environment"
