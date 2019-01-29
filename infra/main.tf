@@ -122,6 +122,7 @@ resource "aws_launch_configuration" "pull_and_run_web_app" {
 resource "aws_elb" "foobar-elb" {
   name               = "foobar-terraform-elb"
   subnets            = ["${module.vpc.public_subnets}"] # Specifying a subnet attached to a VPC allows the aws_elb resource to figure out which VPC it needs to live in. 
+  security_groups    = ["${aws_security_group.allow_port_80.id}"]
 
   listener {
     instance_port     = 80
