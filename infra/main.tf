@@ -86,7 +86,7 @@ module "aws_lc_dev" {
 
 module "aws_elb_dev" {
   source = "./aws_elb"
-  security_group_ids = ["${module.aws_sg_prod.sg_id}"]
+  security_group_ids = ["${module.aws_sg_dev.sg_id}"]
   environment_name = "dev"
   public_subnets = "${module.vpc_dev.public_subnets}"
 }
