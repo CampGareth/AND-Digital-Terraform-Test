@@ -111,7 +111,7 @@ resource "aws_launch_configuration" "pull_and_run_web_app" {
               #!/bin/bash -xe
               exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
               apt-get update
-              apt-get install -y docker.io
+              apt-get install -y docker.io awscli
               systemctl start docker
               aws ecr get-login --region=us-east-1 --no-include-email | sh
               docker pull 259629412777.dkr.ecr.us-east-1.amazonaws.com/campgareth/hello-world-web-app:latest
